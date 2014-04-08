@@ -1,0 +1,1 @@
+public enum Algorithms {BREADTHS_FIRST, A_STAR}
