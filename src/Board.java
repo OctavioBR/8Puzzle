@@ -1,6 +1,8 @@
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Board {
     private int size;
@@ -32,19 +34,25 @@ public class Board {
         return res;
     }
 
-	public List<Board> neighbors() {
-		ArrayList<Board> neighbors = new ArrayList<Board>();
+	public boolean haveNeighbors() {
+		return possibleMoves().size() > 0;
+	}
+
+	public Map<Board, Moves> neighbors() {
+		if(!haveNeighbors())
+			return null;
+		Map<Board, Moves> neighbors = new HashMap<Board, Moves>();
 		List<Moves> moves = possibleMoves();
 		try {
 			for(Moves m : moves) {
 				if(m.name().equals("UP"))
-					neighbors.add(moveUp());
+					neighbors.put(moveUp(), Moves.UP);
 				if(m.name().equals("DOWN"))
-					neighbors.add(moveDown());
+					neighbors.put(moveDown(), Moves.DOWN);
 				if(m.name().equals("LEFT"))
-					neighbors.add(moveLeft());
+					neighbors.put(moveLeft(), Moves.LEFT);
 				if(m.name().equals("RIGHT"))
-					neighbors.add(moveRight());
+					neighbors.put(moveRight(), Moves.RIGHT);
 			}
 		} catch(CannotMoveException e) {
 			System.err.println(e.getMessage());
