@@ -1,6 +1,6 @@
 import java.util.LinkedList;
 
-public class Path {
+public class Path implements Comparable<Path>{
 	private LinkedList<Moves> moveSequence;
 	private LinkedList<Board> nodes;
 	private int cost;
@@ -66,4 +66,15 @@ public class Path {
 	}
 
 	public int getCost() {return cost;}
+
+	public int getHeuristic() {
+		return tail().manhattan();
+	}
+
+	@Override
+	public int compareTo(Path o) {
+		int thisWeight = getCost() + getHeuristic();
+		int otherWeight = o.getCost() + o.getHeuristic();
+		return thisWeight - otherWeight;
+	}
 }

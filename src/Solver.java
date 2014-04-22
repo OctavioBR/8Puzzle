@@ -14,10 +14,12 @@ public class Solver {
 			BreadthsFirstFinder solver = new BreadthsFirstFinder();
 			return solver.solve(this.input);
 		}
+		if(this.algorithm == Algorithms.A_STAR) {
+			AStarFinder solver = new AStarFinder();
+			return solver.solve(this.input);
+		}
 		return null;
 	}
-//    public int moves(){} // min number of moves to solve initial board
-//    public List<Board> solution() {}// sequence of boards in a shortest solution
 }
 
 class BreadthsFirstFinder {
@@ -40,7 +42,7 @@ class BreadthsFirstFinder {
 				this.currentPath = this.frontier.remove();
 			solved = currentPath.goalNodeInside();
 		}
-		System.out.println("PUZZLE SOLVED!!!");
+
 		return this.currentPath;
 	}
 
@@ -55,5 +57,44 @@ class BreadthsFirstFinder {
 			if(newNodeToPath)
 				this.frontier.add(valid);
 		}
+	}
+}
+
+class AStarFinder {
+	private LinkedList<Path> frontier;
+	private Path currentPath;
+
+	public AStarFinder() {
+		this.frontier = new LinkedList<Path>();
+		this.currentPath = new Path();
+	}
+
+	public Path solve(Board node) {
+		this.currentPath.add(node);
+		boolean solved = this.currentPath.goalNodeInside();
+
+		while(!solved) {
+			if(currentPath.tail().haveNeighbors())
+				expand(currentPath.tail());
+			if(!this.frontier.isEmpty())
+				this.currentPath = this.frontier.remove();
+			solved = currentPath.goalNodeInside();
+		}
+
+		return this.currentPath;
+	};
+
+	public void expand(Board node) {
+		Map<Board, Moves> neighbors = node.neighbors();
+		Set<Board> nextNodes = neighbors.keySet();
+		boolean newNodeToPath;
+		for(Board b : nextNodes) {
+			Path valid = this.currentPath.clone();
+			Moves move = neighbors.get(b);
+			newNodeToPath = valid.add(b, move);
+			if(newNodeToPath)
+				this.frontier.add(valid);
+		}
+		Collections.sort(this.frontier);
 	}
 }
