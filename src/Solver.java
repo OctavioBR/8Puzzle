@@ -30,15 +30,12 @@ class BreadthsFirstFinder {
 	}
 
 	public Path solve(Board node) {
-
 		this.currentPath.add(node);
 		boolean solved = this.currentPath.goalNodeInside();
 
 		while(!solved) {
-			if(currentPath.tail().haveNeighbors()) {
-				System.out.println("expanding node: "+currentPath.tail());
+			if(currentPath.tail().haveNeighbors())
 				expand(currentPath.tail());
-			}
 			if(!this.frontier.isEmpty())
 				this.currentPath = this.frontier.remove();
 			solved = currentPath.goalNodeInside();
@@ -50,12 +47,13 @@ class BreadthsFirstFinder {
 	public void expand(Board node) {
 		Map<Board, Moves> neighbors = node.neighbors();
 		Set<Board> nextNodes = neighbors.keySet();
+		boolean newNodeToPath;
 		for(Board b : nextNodes) {
 			Path valid = this.currentPath.clone();
 			Moves move = neighbors.get(b);
-			valid.add(b, move);
-			System.out.println("Added to frontier:"+valid);
-			this.frontier.add(valid);
+			newNodeToPath = valid.add(b, move);
+			if(newNodeToPath)
+				this.frontier.add(valid);
 		}
 	}
 }

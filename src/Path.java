@@ -17,17 +17,21 @@ public class Path {
 		this.nodes = new LinkedList<Board>();
 	}
 
-	public void add(Board board, Moves move) {
+	public boolean add(Board board, Moves move) {
+		if(nodes.contains(board))
+			return false; //avoid looping to same node inside path
 		this.nodes.add(board);
 		this.cost += 1;
 		if(move != null)
 			moveSequence.add(move);
+		return true;
 	}
 
-	public void add(Board board) {
-		add(board, null);
+	public boolean add(Board board) {
+		boolean sucess = add(board, null);
 		if(this.nodes.size() == 1)
 			this.cost -= 1;	//no cost for the first node of path
+		return sucess;
 	}
 
 	public boolean goalNodeInside() {

@@ -36,13 +36,18 @@ public class Board {
     public boolean equals(Object y) {
         if (this == y) return true;
         if (y == null || getClass() != y.getClass()) return false;
-        Board yBoard = (Board) y;
+
+		Board yBoard = (Board) y;
         if (getSize() != yBoard.getSize()) return false;
+
         boolean res = true;
-        for(int i=0; i<this.getSize(); i++) {
-            if(this.blocks[i] != yBoard.blocks[i])
-                res = false;
-        }
+		int[][] xBlocks = this.getBlocks();
+		int[][] yBlocks = ((Board) y).getBlocks();
+		for(int i = 0; i < getSize(); i++) {
+			if(!Arrays.equals(xBlocks[i], yBlocks[i]))
+				res = false;
+		}
+
         return res;
     }
 
