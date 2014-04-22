@@ -194,5 +194,28 @@ public class Board {
 		}
 		return manhattan;
 	}
-	//TODO:	public boolean isSolvable(){};
+
+	public boolean isSolvable() {
+		if(getSize()%2!=0 && inversions()%2==0) //TODO: grids with even size
+			return true;
+		return false;
+	}
+
+	public int inversions() {
+		int[] linearMatrix = new int[getSize()*getSize()];
+		int count = 0;
+		for(int i = 0; i < getSize(); i++) {
+			for(int j = 0; j < getSize(); j++) {
+				linearMatrix[count++] = this.blocks[i][j];
+			}
+		}
+
+		int inversions = 0;
+		for(int i = 0; i < linearMatrix.length - 1; i++) {
+			for(int j = i + 1; j < linearMatrix.length; j++)
+				if(linearMatrix[i] > linearMatrix[j]) inversions++;
+			if(linearMatrix[i] == 0 && i % 2 == 1) inversions++;
+		}
+		return inversions;
+	}
 }
