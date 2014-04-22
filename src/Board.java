@@ -1,12 +1,10 @@
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Board {
     private int size;
-    protected int[][] blocks;
+
+	protected int[][] blocks;
 
     public Board(int[][] blocks) throws InvalidParameterException {
         if(blocks.length != blocks[0].length)
@@ -16,10 +14,24 @@ public class Board {
     }
 
     public boolean isGoal() {
-		return this.equals(new Board(new int[][]{{1,2,3},{4,5,6},{7,8,0}}));
+		if(Arrays.equals(blocks[0], new int[]{1,2,3}) &&
+				Arrays.equals(blocks[1], new int[]{4,5,6}) &&
+				Arrays.equals(blocks[2], new int[]{7,8,0}))
+			return true;
+		return false;
 	};//Improve?
 
 //TODO:	public boolean isSolvable(){};
+
+	public int[][] getBlocks() {
+		int[][] state = new int[getSize()][getSize()];
+		for(int i = 0; i < getSize(); i++) {
+			for(int j = 0; j < getSize(); j++) {
+				state[i][j]= this.blocks[i][j];
+			}
+		}
+		return state;
+	}
 
     public boolean equals(Object y) {
         if (this == y) return true;
@@ -65,17 +77,17 @@ public class Board {
 		Block empty = getEmpty();
 		if(empty.getX()>0)
 			moves.add(Moves.UP);
-		if(empty.getX()<getSize()-2)
+		if(empty.getX()<getSize()-1)
 			moves.add(Moves.DOWN);
 		if(empty.getY()>0)
 			moves.add(Moves.LEFT);
-		if(empty.getY()<getSize()-2)
+		if(empty.getY()<getSize()-1)
 			moves.add(Moves.RIGHT);
 		return moves;
 	}
 
 	public Board moveUp() throws CannotMoveException {
-		Board nextBoard = new Board(this.blocks);
+		Board nextBoard = new Board(getBlocks());
 		Block empty = getEmpty();
 		int x = empty.getX();
 		int y = empty.getY();
@@ -89,7 +101,7 @@ public class Board {
 	}
 
 	public Board moveDown() throws CannotMoveException {
-		Board nextBoard = new Board(this.blocks);
+		Board nextBoard = new Board(getBlocks());
 		Block empty = getEmpty();
 		int x = empty.getX();
 		int y = empty.getY();
@@ -103,7 +115,7 @@ public class Board {
 	}
 
 	public Board moveLeft() throws CannotMoveException {
-		Board nextBoard = new Board(this.blocks);
+		Board nextBoard = new Board(getBlocks());
 		Block empty = getEmpty();
 		int x = empty.getX();
 		int y = empty.getY();
@@ -117,7 +129,7 @@ public class Board {
 	}
 
 	public Board moveRight() throws CannotMoveException {
-		Board nextBoard = new Board(this.blocks);
+		Board nextBoard = new Board(getBlocks());
 		Block empty = getEmpty();
 		int x = empty.getX();
 		int y = empty.getY();
@@ -143,7 +155,7 @@ public class Board {
 		return pos;
 	}
 
-    public String toString(){
+    public String toString() {
 		String s = new String();
 		for(int i = 0; i < getSize(); i++) {
 			s += (this.blocks[i][0]+" "+
