@@ -35,12 +35,15 @@ class BreadthsFirstFinder {
 		boolean solved = this.currentPath.goalNodeInside();
 
 		while(!solved) {
-			if(currentPath.tail().haveNeighbors())
-				expand(node);
+			if(currentPath.tail().haveNeighbors()) {
+				System.out.println("expanding node: "+currentPath.tail());
+				expand(currentPath.tail());
+			}
 			if(!this.frontier.isEmpty())
 				this.currentPath = this.frontier.remove();
 			solved = currentPath.goalNodeInside();
 		}
+		System.out.println("PUZZLE SOLVED!!!");
 		return this.currentPath;
 	}
 
@@ -51,61 +54,8 @@ class BreadthsFirstFinder {
 			Path valid = this.currentPath.clone();
 			Moves move = neighbors.get(b);
 			valid.add(b, move);
+			System.out.println("Added to frontier:"+valid);
 			this.frontier.add(valid);
 		}
-	}
-}
-
-class Path {
-	private LinkedList<Moves> moveSequence;
-	private int cost;
-	private LinkedList<Board> nodes;
-
-	Path(LinkedList<Moves> moveSequence, int cost, LinkedList<Board> nodes) {
-		this.moveSequence = moveSequence;
-		this.cost = cost;
-		this.nodes = nodes;
-	}
-
-	Path() {
-		this.moveSequence = new LinkedList<Moves>();
-		this.cost = 0;
-		this.nodes = new LinkedList<Board>();
-	}
-
-	public void add(Board board, Moves move) {
-		this.nodes.add(board);
-		this.cost += 1;
-		if(move != null)
-			moveSequence.add(move);
-	}
-
-	public void add(Board board) {
-		add(board, null);
-		if(this.nodes.size() == 1)
-			this.cost -= 1;	//no cost for the first node of path
-	}
-
-	public boolean goalNodeInside() {
-		Board endNode = this.nodes.peekLast();
-		if(endNode != null)
-			return endNode.isGoal();
-		return false;
-	}
-
-	public Board tail() {
-		return nodes.peekLast();
-	}
-
-	public Path clone() {
-		return new Path(this.moveSequence, this.cost, this.nodes);
-	}
-
-	public String toString() {
-		String s = "Path:\n";
-		for(Board b : this.nodes) {
-			s += b.toString() + "\n";
-		}
-		return s;
 	}
 }
