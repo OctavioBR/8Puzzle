@@ -57,8 +57,10 @@ public class Path {
 
 	public String toString() {
 		String s = "Path:\n";
-		for(Board b : this.nodes) {
-			s += b.toString() + "\n";
+		for(int i = 0; i < nodes.size(); i++) {
+			s += nodes.get(i).toString();
+			try{s += String.format("move -> %s\n",moveSequence.get(i));}
+			catch(IndexOutOfBoundsException e) {}
 		}
 		return s;
 	}
