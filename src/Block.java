@@ -3,6 +3,18 @@ public class Block {
 	private int x;
 	private int y;
 
+	public Block(int value, int x, int y) {
+		this.value = value;
+		this.x = x;
+		this.y = y;
+	}
+
+	public Block() {
+		this.value = 0;
+		this.x = 0;
+		this.y = 0;
+	}
+
 	public int getValue() {
 		return value;
 	}

@@ -3,7 +3,6 @@ import java.util.*;
 
 public class Board {
     private int size;
-
 	protected int[][] blocks;
 
     public Board(int[][] blocks) throws InvalidParameterException {
@@ -21,17 +20,6 @@ public class Board {
 		return false;
 	};//Improve?
 
-//TODO:	public boolean isSolvable(){};
-
-	public int[][] getBlocks() {
-		int[][] state = new int[getSize()][getSize()];
-		for(int i = 0; i < getSize(); i++) {
-			for(int j = 0; j < getSize(); j++) {
-				state[i][j]= this.blocks[i][j];
-			}
-		}
-		return state;
-	}
 
     public boolean equals(Object y) {
         if (this == y) return true;
@@ -170,11 +158,41 @@ public class Board {
 		return s;
 	};
 
-    public int getSize() {
-        return this.size;
-    }
+    public int getSize() {return this.size;}
 
+	public int[][] getBlocks() {
+		int[][] state = new int[getSize()][getSize()];
+		for(int i = 0; i < getSize(); i++) {
+			for(int j = 0; j < getSize(); j++) {
+				state[i][j]= this.blocks[i][j];
+			}
+		}
+		return state;
+	}
+	public int manhattan() {
+		HashMap<Integer, Block> list = new HashMap(); //model list of goal state
+		int valCount = 1;
+		for(int i = 0; i < getSize(); i++) {
+			for(int j = 0; j < getSize(); j++) {
+				if(valCount>8) {
+					valCount = 0;
+				}
+				list.put(valCount, new Block(valCount,i,j));
+				valCount++;
+			}
+		}
 
-//TODO:    public int hamming() {}		// number of blocks out of place
-//TODO:    public int manhattan() {}	// sum of Manhattan distances between blocks and goal
+		int manhattan = 0, analyzedBlock;
+		Block goalBlock;
+		for(int i = 0; i < getSize(); i++) {
+			for(int j = 0; j < getSize(); j++) {
+				analyzedBlock = this.blocks[i][j];
+				goalBlock = list.get(analyzedBlock);
+				manhattan += Math.abs(i - goalBlock.getX());
+				manhattan += Math.abs(j - goalBlock.getY());
+			}
+		}
+		return manhattan;
+	}
+	//TODO:	public boolean isSolvable(){};
 }
