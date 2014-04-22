@@ -16,19 +16,26 @@ public class Main {
 				{2,0,7},
 				{3,4,1}
 		});
+		Board ex3 = new Board(new int[][]{
+				{4,8,3},
+				{1,0,6},
+				{2,5,7}
+		});
 		Board hardest = new Board(new int[][]{
 				{8,7,6},
 				{2,5,4},
 				{3,0,1}
 		});
 
-		Board input = ex2;
+		Board input = ex1;
 
 		if(input.isSolvable()) {
-			Solver ai = new Solver(input, Algorithms.A_STAR);
+			Solver ai = new Solver(input, Algorithms.BREADTHS_FIRST);
 			Path result = ai.solve();
 			System.out.println(result);
 			System.out.printf("Minimum Steps: %d", result.getCost());
+		} else {
+			System.out.println("Nao solucionavel");
 		}
 	}
 }

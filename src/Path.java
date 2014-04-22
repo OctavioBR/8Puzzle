@@ -72,7 +72,7 @@ public class Path implements Comparable<Path>{
 	}
 
 	@Override
-	public int compareTo(Path o) {
+		public int compareTo(Path o) {
 		int thisWeight = getCost() + getHeuristic();
 		int otherWeight = o.getCost() + o.getHeuristic();
 		return thisWeight - otherWeight;

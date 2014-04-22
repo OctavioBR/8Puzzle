@@ -12,13 +12,25 @@ public class Board {
         this.blocks = blocks;
     }
 
-    public boolean isGoal() {
+    public boolean isGoal() { // goal state must be with empty on last block
 		if(Arrays.equals(blocks[0], new int[]{1,2,3}) &&
-				Arrays.equals(blocks[1], new int[]{4,5,6}) &&
-				Arrays.equals(blocks[2], new int[]{7,8,0}))
+		   Arrays.equals(blocks[1], new int[]{4,5,6}) &&
+		   Arrays.equals(blocks[2], new int[]{7,8,0}))
 			return true;
 		return false;
-	};//Improve?
+	};
+	
+	public boolean isGoalM() { // goal state is any ordered matrix
+		boolean goal = true;
+		int [] linearMatrix = getLinearMatrix();
+		for(int i = 1; i < linearMatrix.length; i++) {
+			if(linearMatrix[i-1] > linearMatrix[i] && linearMatrix[i] != 0) {
+				goal = false;
+				break;
+			}
+		}
+		return goal;
+	}
 
 
     public boolean equals(Object y) {
@@ -202,14 +214,8 @@ public class Board {
 	}
 
 	public int inversions() {
-		int[] linearMatrix = new int[getSize()*getSize()];
-		int count = 0;
-		for(int i = 0; i < getSize(); i++) {
-			for(int j = 0; j < getSize(); j++) {
-				linearMatrix[count++] = this.blocks[i][j];
-			}
-		}
-
+		int[] linearMatrix = getLinearMatrix();
+		
 		int inversions = 0;
 		for(int i = 0; i < linearMatrix.length - 1; i++) {
 			for(int j = i + 1; j < linearMatrix.length; j++)
@@ -217,5 +223,16 @@ public class Board {
 			if(linearMatrix[i] == 0 && i % 2 == 1) inversions++;
 		}
 		return inversions;
+	}
+
+	public int[] getLinearMatrix() {
+		int[] linearMatrix = new int[getSize()*getSize()];
+		int count = 0;
+		for(int i = 0; i < getSize(); i++) {
+			for(int j = 0; j < getSize(); j++) {
+				linearMatrix[count++] = this.blocks[i][j];
+			}
+		}
+		return linearMatrix;
 	}
 }
